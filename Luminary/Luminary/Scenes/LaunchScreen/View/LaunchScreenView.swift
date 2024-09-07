@@ -32,7 +32,7 @@ struct LaunchScreenView: View {
                         .multilineTextAlignment(.center)
                     
                     Button(action: {
-                        //
+                        NavigationLink(destination: HomeView(), label: <#T##() -> View#>)
                     }) {
                         Text("Clique Aqui")
                             .font(.system(size: 16, weight: .bold))
