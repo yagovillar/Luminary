@@ -23,10 +23,19 @@ struct LuminaryApp: App {
         }
     }()
 
+    @StateObject private var appRootManager = AppRootManager()
     
     var body: some Scene {
         WindowGroup {
-            LaunchScreenView()
+            Group {
+                switch appRootManager.currentRoot {
+                case .launch:
+                    LaunchScreenView()
+                case .home:
+                    HomeView()
+                }
+            }
+            .environmentObject(appRootManager)
         }
     }
 }

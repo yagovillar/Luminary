@@ -8,11 +8,13 @@
 import SwiftUI
 
 struct LaunchScreenView: View {
+    
+    @EnvironmentObject private var appRootManager: AppRootManager
         
     var body: some View {
         NavigationStack {
             ZStack(content: {
-                Color(.black).ignoresSafeArea()
+                Color(hex: "171412").ignoresSafeArea()
                 VStack(content: {
                     Image(uiImage: UIImage(named: "LaunchScreenImage") ?? UIImage())
                         .resizable()
@@ -32,7 +34,7 @@ struct LaunchScreenView: View {
                         .multilineTextAlignment(.center)
                     
                     Button(action: {
-                        NavigationLink(destination: HomeView(), label: <#T##() -> View#>)
+                        appRootManager.currentRoot = .home
                     }) {
                         Text("Clique Aqui")
                             .font(.system(size: 16, weight: .bold))
@@ -47,8 +49,6 @@ struct LaunchScreenView: View {
                     Spacer()
                 })
             })
-            .navigationTitle("Luminary")
-            .navigationBarModifier(backgroundColor: .systemBackground, foregroundColor: .white, tintColor: nil, withSeparator: true)
         
         }
     }
