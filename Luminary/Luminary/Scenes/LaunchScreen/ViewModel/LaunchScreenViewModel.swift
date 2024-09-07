@@ -12,8 +12,6 @@ extension LaunchScreenView {
     @Observable
     class ViewModel {
             
-        private let router = Router.shared
-
         func navigateToHome() {
             router.navigate(to: .homeScreen)
         }

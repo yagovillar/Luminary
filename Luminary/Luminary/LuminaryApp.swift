@@ -23,21 +23,10 @@ struct LuminaryApp: App {
         }
     }()
 
-    @ObservedObject var router = Router.shared
     
     var body: some Scene {
         WindowGroup {
-            NavigationStack(path: $router.navPath) {
-                LaunchScreenView()
-                .navigationDestination(for: Router.Destination.self) { destination in
-                    switch destination {
-                    case .launchScreen:
-                        LaunchScreenView()
-                    case .homeScreen:
-                        Text("TESTE")
-                    }
-                }
-            }
+            LaunchScreenView()
         }
     }
 }
