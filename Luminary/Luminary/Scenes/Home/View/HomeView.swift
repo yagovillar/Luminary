@@ -36,7 +36,9 @@ struct HomeView: View {
                         ScrollView {
                             VStack(alignment: .leading) {
                                 ForEach(0..<10, id: \.self) { number in
-                                    RecentCell().padding(.vertical, 5)
+                                    NavigationLink(destination: DetailsView()) {
+                                        RecentCell()
+                                    }
                                 }
                             }
                         }
