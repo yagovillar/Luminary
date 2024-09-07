@@ -21,6 +21,8 @@
 		0C6F37A52C8C2880006F5E83 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6F37A42C8C2880006F5E83 /* Router.swift */; };
 		0C6F37A82C8C2F33006F5E83 /* NavigationBarModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6F37A72C8C2F33006F5E83 /* NavigationBarModifier.swift */; };
 		0C6F37AA2C8C2F89006F5E83 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6F37A92C8C2F89006F5E83 /* View+Extensions.swift */; };
+		0C6F37AF2C8C311C006F5E83 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6F37AE2C8C311C006F5E83 /* HomeView.swift */; };
+		0C6F37B32C8C33D8006F5E83 /* TextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6F37B22C8C33D8006F5E83 /* TextFieldStyle.swift */; };
 		94D56B5B542A2C1D4D74913B /* Pods_LuminaryTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75D78A4DF45F1E00BFBA6D2 /* Pods_LuminaryTests.framework */; };
 		D3855611015B0CB402D0431F /* Pods_Luminary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93EFAF0057A8723B2A6BFB85 /* Pods_Luminary.framework */; };
 /* End PBXBuildFile section */
@@ -59,6 +61,8 @@
 		0C6F37A42C8C2880006F5E83 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		0C6F37A72C8C2F33006F5E83 /* NavigationBarModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarModifier.swift; sourceTree = "<group>"; };
 		0C6F37A92C8C2F89006F5E83 /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
+		0C6F37AE2C8C311C006F5E83 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		0C6F37B22C8C33D8006F5E83 /* TextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldStyle.swift; sourceTree = "<group>"; };
 		4EF3CA24245840A39EB7D650 /* Pods_Luminary_LuminaryUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Luminary_LuminaryUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		582B2F1D7BA21836BC2AA333 /* Pods-Luminary-LuminaryUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Luminary-LuminaryUITests.debug.xcconfig"; path = "Target Support Files/Pods-Luminary-LuminaryUITests/Pods-Luminary-LuminaryUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		93EFAF0057A8723B2A6BFB85 /* Pods_Luminary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Luminary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -124,7 +128,6 @@
 			isa = PBXGroup;
 			children = (
 				0C6F37A12C8C284B006F5E83 /* Core */,
-				0C6F37952C8C0A95006F5E83 /* Extensions */,
 				0C6F37902C8C05AD006F5E83 /* Scenes */,
 				0C6F37632C8BDDCC006F5E83 /* LuminaryApp.swift */,
 				0C6F37672C8BDDCC006F5E83 /* Item.swift */,
@@ -162,6 +165,7 @@
 		0C6F37902C8C05AD006F5E83 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				0C6F37AB2C8C3103006F5E83 /* Home */,
 				0C6F37912C8C05B4006F5E83 /* LaunchScreen */,
 			);
 			path = Scenes;
@@ -204,6 +208,8 @@
 		0C6F37A12C8C284B006F5E83 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				0C6F37B12C8C33C9006F5E83 /* Styles */,
+				0C6F37952C8C0A95006F5E83 /* Extensions */,
 				0C6F37A62C8C2F24006F5E83 /* Modifiers */,
 				0C6F37A32C8C2872006F5E83 /* Router */,
 			);
@@ -224,6 +230,38 @@
 				0C6F37A72C8C2F33006F5E83 /* NavigationBarModifier.swift */,
 			);
 			path = Modifiers;
+			sourceTree = "<group>";
+		};
+		0C6F37AB2C8C3103006F5E83 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				0C6F37AD2C8C310C006F5E83 /* ViewModel */,
+				0C6F37AC2C8C3108006F5E83 /* View */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		0C6F37AC2C8C3108006F5E83 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				0C6F37AE2C8C311C006F5E83 /* HomeView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		0C6F37AD2C8C310C006F5E83 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		0C6F37B12C8C33C9006F5E83 /* Styles */ = {
+			isa = PBXGroup;
+			children = (
+				0C6F37B22C8C33D8006F5E83 /* TextFieldStyle.swift */,
+			);
+			path = Styles;
 			sourceTree = "<group>";
 		};
 		21AA36ABFC85BCA9959269D2 /* Frameworks */ = {
@@ -451,8 +489,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C6F37AF2C8C311C006F5E83 /* HomeView.swift in Sources */,
 				0C6F37972C8C0AA1006F5E83 /* Color+Extensions.swift in Sources */,
 				0C6F37A82C8C2F33006F5E83 /* NavigationBarModifier.swift in Sources */,
+				0C6F37B32C8C33D8006F5E83 /* TextFieldStyle.swift in Sources */,
 				0C6F379D2C8C19C6006F5E83 /* LaunchScreenViewModel.swift in Sources */,
 				0C6F37A52C8C2880006F5E83 /* Router.swift in Sources */,
 				0C6F37682C8BDDCC006F5E83 /* Item.swift in Sources */,
