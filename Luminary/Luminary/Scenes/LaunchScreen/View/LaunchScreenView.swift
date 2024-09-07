@@ -8,9 +8,7 @@
 import SwiftUI
 
 struct LaunchScreenView: View {
-    
-    private var viewModel = ViewModel()
-    
+        
     var body: some View {
         NavigationStack {
             ZStack(content: {
@@ -34,7 +32,7 @@ struct LaunchScreenView: View {
                         .multilineTextAlignment(.center)
                     
                     Button(action: {
-                        viewModel.navigateToHome()
+                        //
                     }) {
                         Text("Clique Aqui")
                             .font(.system(size: 16, weight: .bold))
