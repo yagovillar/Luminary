@@ -13,8 +13,8 @@ final class Router: ObservableObject {
     static let shared = Router()
     
     public enum Destination: Codable, Hashable {
-        case livingroom
-        case test
+        case launchScreen
+        case homeScreen
     }
     
     private init() {}

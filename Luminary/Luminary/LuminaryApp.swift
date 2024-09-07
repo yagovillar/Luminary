@@ -31,9 +31,9 @@ struct LuminaryApp: App {
                 LaunchScreenView()
                 .navigationDestination(for: Router.Destination.self) { destination in
                     switch destination {
-                    case .livingroom:
+                    case .launchScreen:
                         LaunchScreenView()
-                    case .test:
+                    case .homeScreen:
                         Text("TESTE")
                     }
                 }

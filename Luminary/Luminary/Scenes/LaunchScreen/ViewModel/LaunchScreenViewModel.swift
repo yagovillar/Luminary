@@ -15,7 +15,7 @@ extension LaunchScreenView {
         private let router = Router.shared
 
         func navigateToHome() {
-            router.navigate(to: .test)
+            router.navigate(to: .homeScreen)
         }
     }
 }
