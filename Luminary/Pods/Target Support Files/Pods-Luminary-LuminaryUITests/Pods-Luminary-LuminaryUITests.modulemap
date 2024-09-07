@@ -1,0 +1,6 @@
+framework module Pods_Luminary_LuminaryUITests {
+  umbrella header "Pods-Luminary-LuminaryUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
