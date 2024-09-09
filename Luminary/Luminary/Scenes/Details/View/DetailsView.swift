@@ -34,7 +34,9 @@ struct DetailsView: View {
                 ScrollView {
                     VStack(alignment: .leading) {
                         ForEach(0..<10, id: \.self) { number in
-                            EpisodesCell().padding(.vertical, 5)
+                            NavigationLink(destination: PlayerView()) {
+                                EpisodesCell().padding(.vertical, 5)
+                            }
                         }
                     }
                 }
