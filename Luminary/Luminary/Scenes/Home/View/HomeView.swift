@@ -9,13 +9,19 @@ import SwiftUI
 
 struct HomeView: View {
     @State private var rss = ""
+<<<<<<< Updated upstream
+=======
+    @State private var viewModel = ViewModel(podcastService: PodcastService())
+    @State private var errorMessage: String = ""
+
+>>>>>>> Stashed changes
 
     var body: some View {
         NavigationStack {
             ZStack{
                 Color(hex: "171412").ignoresSafeArea()
                 VStack{
-                    VStack { // TextField
+                    VStack(alignment: .leading) {
                         VStack(alignment: .leading) {
                             Text("RSS")
                                 .font(.headline)
@@ -24,9 +30,16 @@ struct HomeView: View {
                             TextField("", text: $rss, prompt: Text("Paste  the RSS URL").foregroundStyle(Color(hex: "BAA89C")))
                             .foregroundStyle(Color(hex: "BAA89C"))
                                 .textFieldStyle(CustomTextFieldStyle())
+                                .onChange(of: $rss) { _ in
+                                        validateURL()
+                                    }
                         }
-                    }.padding()
                         .frame(height: 112)
+
+                        Text(errorMessage)
+                            .foregroundStyle(.red)
+                            .font(.system(.subheadline))
+                    }.padding()
                     
                     VStack(alignment: .leading) {
                         Text("Recently Played")
@@ -49,6 +62,8 @@ struct HomeView: View {
             }    
             .navigationBarModifier(backgroundColor: .clear, foregroundColor: .white, tintColor: .white, withSeparator: false)
             .navigationTitle("Add Podcasts")
+            .onAppear(perform: {
+            })
         }
     }
 }
