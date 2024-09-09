@@ -13,3 +13,10 @@ extension View {
         self.modifier(NavigationBarModifier(backgroundColor: backgroundColor, foregroundColor: foregroundColor, tintColor: tintColor, withSeparator: withSeparator))
     }
 }
+
+extension View {
+
+  func toastView(toast: Binding<Toast?>) -> some View {
+    self.modifier(ToastModifier(toast: toast))
+  }
+}
