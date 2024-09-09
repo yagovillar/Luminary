@@ -9,6 +9,8 @@ import SwiftUI
 
 struct HomeView: View {
     @State private var rss = ""
+    @State private var viewModel = ViewModel(podcastService: PodcastService())
+    
 
     var body: some View {
         NavigationStack {
@@ -51,6 +53,11 @@ struct HomeView: View {
             }    
             .navigationBarModifier(backgroundColor: .clear, foregroundColor: .white, tintColor: .white, withSeparator: false)
             .navigationTitle("Add Podcasts")
+            .onAppear(perform: {
+                viewModel.fetchPodcast()
+            })
+            .toastView(toast: $viewModel.errorToast)
+            
         }
     }
 }
