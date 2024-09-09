@@ -27,37 +27,87 @@ enum PodcastError: Error {
     }
 }
 
-class PodcastService {
+class PodcastService: ObservableObject {
     private let session: URLSession
+    @Published var podcastUrl: String?
 
     init(session: URLSession = .shared) {
         self.session = session
     }
+    
 
-    func fetchPodcast(from url: String) async -> Result<Podcast, PodcastError> {
+    func validateRSSURL(_ urlString: String, completion: @escaping (Result<Bool, PodcastError>) -> Void) {
+        guard let url = URL(string: urlString) else {
+            completion(.failure(.notFound))
+            return
+        }
+        
+        let task = session.dataTask(with: url) { data, response, error in
+            if let error = error {
+                completion(.failure(.networkError))
+                return
+            }
+            
+            guard let httpResponse = response as? HTTPURLResponse,
+                  (200...299).contains(httpResponse.statusCode) else {
+                completion(.failure(.networkError))
+                return
+            }
+            
+            guard let data = data,
+                  let xmlString = String(data: data, encoding: .utf8) else {
+                completion(.failure(.notFound))
+                return
+            }
+            
+            let isRSS = xmlString.contains("<rss") ||
+                        xmlString.contains("<feed") ||
+                        xmlString.contains("<channel") ||
+                        xmlString.contains("<item>")
+            
+            self.podcastUrl = urlString
+            completion(.success(isRSS))
+        }
+        
+        task.resume()
+    }
+
+    func fetchPodcast(from url: String, completion: @escaping (Result<Podcast, PodcastError>) -> Void) {
         guard let feedUrl = URL(string: url) else {
-            return .failure(.notFound)
+            completion(.failure(.notFound))
+            return
         }
 
-        do {
-            let (data, response) = try await session.data(from: feedUrl)
-            
-            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-                return .failure(.networkError)
+        let task = session.dataTask(with: feedUrl) { data, response, error in
+            if let error = error {
+                completion(.failure(.networkError))
+                return
+            }
+
+            guard let httpResponse = response as? HTTPURLResponse,
+                  (200...299).contains(httpResponse.statusCode) else {
+                completion(.failure(.networkError))
+                return
+            }
+
+            guard let data = data else {
+                completion(.failure(.unknownError))
+                return
             }
 
             let parser = PodcastXMLParser()
-            let podcast = try parser.parse(data)
-            return .success(podcast)
-            
-        } catch {
-            if let urlError = error as? URLError {
-                return .failure(.networkError)
-            } else if let parsingError = error as? PodcastError {
-                return .failure(parsingError)
-            } else {
-                return .failure(.unknownError)
+            do {
+                let podcast = try parser.parse(data)
+                completion(.success(podcast))
+            } catch {
+                if let parsingError = error as? PodcastError {
+                    completion(.failure(parsingError))
+                } else {
+                    completion(.failure(.unknownError))
+                }
             }
         }
+
+        task.resume()
     }
 }

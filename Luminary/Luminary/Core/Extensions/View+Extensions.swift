@@ -15,8 +15,13 @@ extension View {
 }
 
 extension View {
-
   func toastView(toast: Binding<Toast?>) -> some View {
     self.modifier(ToastModifier(toast: toast))
   }
+}
+
+extension View {
+    func isLoading(_ isLoading: Bool) -> some View {
+        self.modifier(LoadingModifier(isLoading: isLoading))
+    }
 }
