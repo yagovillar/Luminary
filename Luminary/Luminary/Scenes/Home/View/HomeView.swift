@@ -9,12 +9,8 @@ import SwiftUI
 
 struct HomeView: View {
     @State private var rss = ""
-<<<<<<< Updated upstream
-=======
     @State private var viewModel = ViewModel(podcastService: PodcastService())
     @State private var errorMessage: String = ""
-
->>>>>>> Stashed changes
 
     var body: some View {
         NavigationStack {
