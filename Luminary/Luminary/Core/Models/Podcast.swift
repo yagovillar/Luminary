@@ -8,9 +8,9 @@
 import Foundation
 
 struct Podcast {
-    let title: String
-    let description: String
-    let imageUrl: String
-    let author: String
-    let episodes: [Episode]
+    var title: String
+    var description: String
+    var imageUrl: String
+    var author: String
+    var episodes: [Episode]
 }

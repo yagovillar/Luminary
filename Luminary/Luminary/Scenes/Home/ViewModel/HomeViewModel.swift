@@ -17,16 +17,6 @@ extension HomeView {
         init(podcastService: PodcastService) {
             self.podcastService = podcastService
         }
-        
-        func fetchPodcast() {
-            podcastService.fetchPodcast(from: "https://feeds.megaphone.fm/la-cotorrisa") { result in
-                switch result {
-                case .success(let success):
-                    self.podcast = success
-                case .failure(let failure):
-                    self.errorToast = Toast(style: .error, message: failure.localizedDescription)
-                }
-            }
-        }
+
     }
 }

@@ -8,13 +8,13 @@
 import Foundation
 
 struct Episode {
-    let title: String
-    let description: String
-    let pubDate: Date
-    let audioUrl: String
-    let duration: Int
-    let isExplicit: Bool
-    let guid: String
-    let author: String
-    let podcastName: String
+    var title: String
+    var description: String
+    var pubDate: Date
+    var audioUrl: String
+    var duration: Int
+    var isExplicit: Bool
+    var guid: String
+    var author: String
+    var podcastName: String
 }
