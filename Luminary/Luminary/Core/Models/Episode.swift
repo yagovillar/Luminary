@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Episode {
+struct Episode: Hashable {
     var title: String
     var description: String
     var pubDate: String
@@ -18,6 +18,7 @@ struct Episode {
     var author: String
     var podcastName: String
     var image: String?
+    var isPlaying: Bool = false
     
     static func getEmptyEpisode() -> Episode {
         return Episode(title: "", description: "", pubDate: "", audioUrl: "", duration: "", isExplicit: false, guid: "", author: "", podcastName: "")

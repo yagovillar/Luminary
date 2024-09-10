@@ -83,7 +83,8 @@ class PodcastBuilder {
     }
     
     func finishCurrentEpisode() {
-        if let episode = currentEpisode {
+        if var episode = currentEpisode {
+            episode.image = podcastImageUrl
             episodes.append(episode)
         }
         currentEpisode = nil

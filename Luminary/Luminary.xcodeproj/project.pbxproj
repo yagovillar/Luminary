@@ -46,6 +46,7 @@
 		0C6F380F2C90109A006F5E83 /* PlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6F380E2C90109A006F5E83 /* PlayerViewModel.swift */; };
 		0C6F38112C901BDF006F5E83 /* TimeInterval+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6F38102C901BDF006F5E83 /* TimeInterval+Extensions.swift */; };
 		0C6F38142C9020EE006F5E83 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6F38132C9020EE006F5E83 /* AudioPlayer.swift */; };
+		0C6F381C2C90CDFF006F5E83 /* PodcastDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6F381B2C90CDFF006F5E83 /* PodcastDataModel.swift */; };
 		94D56B5B542A2C1D4D74913B /* Pods_LuminaryTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75D78A4DF45F1E00BFBA6D2 /* Pods_LuminaryTests.framework */; };
 		D3855611015B0CB402D0431F /* Pods_Luminary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93EFAF0057A8723B2A6BFB85 /* Pods_Luminary.framework */; };
 /* End PBXBuildFile section */
@@ -109,6 +110,7 @@
 		0C6F380E2C90109A006F5E83 /* PlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewModel.swift; sourceTree = "<group>"; };
 		0C6F38102C901BDF006F5E83 /* TimeInterval+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+Extensions.swift"; sourceTree = "<group>"; };
 		0C6F38132C9020EE006F5E83 /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
+		0C6F381B2C90CDFF006F5E83 /* PodcastDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastDataModel.swift; sourceTree = "<group>"; };
 		4EF3CA24245840A39EB7D650 /* Pods_Luminary_LuminaryUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Luminary_LuminaryUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		582B2F1D7BA21836BC2AA333 /* Pods-Luminary-LuminaryUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Luminary-LuminaryUITests.debug.xcconfig"; path = "Target Support Files/Pods-Luminary-LuminaryUITests/Pods-Luminary-LuminaryUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		93EFAF0057A8723B2A6BFB85 /* Pods_Luminary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Luminary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -377,6 +379,7 @@
 				0C6F37E92C8E7644006F5E83 /* Episode.swift */,
 				0C6F37F92C8F3C4C006F5E83 /* PodcastBuilder.swift */,
 				0C6F38072C8FFB65006F5E83 /* PodcastImage.swift */,
+				0C6F381B2C90CDFF006F5E83 /* PodcastDataModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -678,6 +681,7 @@
 				0C6F37642C8BDDCC006F5E83 /* LuminaryApp.swift in Sources */,
 				0C6F37942C8C05C7006F5E83 /* LaunchScreenView.swift in Sources */,
 				0C6F38002C8F649B006F5E83 /* LoadingModifier.swift in Sources */,
+				0C6F381C2C90CDFF006F5E83 /* PodcastDataModel.swift in Sources */,
 				0C6F38062C8F9D85006F5E83 /* DetailsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

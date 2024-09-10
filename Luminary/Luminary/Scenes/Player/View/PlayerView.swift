@@ -12,18 +12,22 @@ struct PlayerView: View {
     @State private var viewModel: ViewModel
     
     init(viewModel: ViewModel) {
-        self.viewModel = viewModel
+        _viewModel = State(wrappedValue: viewModel)
     }
     
     var body: some View {
         ZStack {
             Color(hex: "171412").ignoresSafeArea()
+            
             VStack(alignment: .center) {
                 AsyncImage(url: URL(string: viewModel.episode.image ?? "")) { image in
-                    image.image?.resizable()
+                    image.resizable()
+                        .scaledToFit()
+                } placeholder: {
+                    ProgressView()
                 }
                 .frame(width: 256, height: 256)
-                .clipShape(.rect(cornerRadius: 12))
+                .clipShape(RoundedRectangle(cornerRadius: 12))
                 
                 Text(viewModel.episode.title)
                     .font(.system(size: 22, weight: .bold))
@@ -39,6 +43,7 @@ struct PlayerView: View {
                 }), in: 0...viewModel.player.totalTime)
                 .foregroundStyle(.white)
                 .padding(.horizontal)
+                
                 HStack {
                     Text(viewModel.player.currentTime.toTimeString())
                         .foregroundStyle(Color(hex: "BAA89E"))
@@ -49,45 +54,50 @@ struct PlayerView: View {
                         .font(.system(size: 12, weight: .regular))
                 }
                 
-                HStack(spacing: 24) {
-                    
-                    Button(action: {
-                        viewModel.player.seekAudio(to: viewModel.player.currentTime - 30.0)
-                    }, label: {
-                        Image(systemName: "backward.fill")
-                            .symbolRenderingMode(.palette)
-                            .foregroundStyle(.white)
-                            .font(.system(size: 30))
-                    })
-                    
-                    Button(action: {
-                        viewModel.player.playButtonTapped()
-                    }, label: {
-                        Image(uiImage: UIImage(named: viewModel.player.isPlaying ? "PauseButton" : "PlayButton") ?? UIImage())
-                            .resizable()
-                            .frame(width: 64, height: 64)
-                            .clipShape(.rect(cornerRadius: 12))
-                    })
-                    
-                    Button(action: {
-                        viewModel.player.seekAudio(to: viewModel.player.currentTime + 30.0)
-                    }, label: {
-                        Image(systemName: "forward.fill")
-                            .symbolRenderingMode(.palette)
-                            .foregroundStyle(.white)
-                            .font(.system(size: 30))
-                    })
-
-                }.padding()
-            }.onAppear(perform: {
+                ControlsView(viewModel: viewModel)
+            }
+            .onAppear {
                 viewModel.player.loadAudio()
-            })
-            .onReceive(Timer.publish(every: 0.1, on: .main, in: .common).autoconnect(), perform: { _ in
-                viewModel.player.updateProgress()
-            })
+            }
             .toastView(toast: $viewModel.errorToast)
             .isLoading(viewModel.player.isLoading)
         }
+    }
+}
+
+struct ControlsView: View {
+    @State var viewModel: PlayerView.ViewModel
+    
+    var body: some View {
+        HStack(spacing: 24) {
+            Button(action: {
+                viewModel.player.seekAudio(to: viewModel.player.currentTime - 30.0)
+            }) {
+                Image(systemName: "backward.fill")
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(.white)
+                    .font(.system(size: 30))
+            }
+            
+            Button(action: {
+                viewModel.player.playButtonTapped()
+            }) {
+                Image(uiImage: UIImage(named: viewModel.player.isPlaying ? "PauseButton" : "PlayButton") ?? UIImage())
+                    .resizable()
+                    .frame(width: 64, height: 64)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+            }
+            
+            Button(action: {
+                viewModel.player.seekAudio(to: viewModel.player.currentTime + 30.0)
+            }) {
+                Image(systemName: "forward.fill")
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(.white)
+                    .font(.system(size: 30))
+            }
+        }
+        .padding()
     }
 }
 

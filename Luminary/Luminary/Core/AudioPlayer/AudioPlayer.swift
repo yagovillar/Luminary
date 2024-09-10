@@ -7,14 +7,17 @@
 
 import Foundation
 import AVKit
+import Combine
 
-@Observable class AudioPlayer {
+@Observable class AudioPlayer: ObservableObject {
     var totalTime: TimeInterval = 0.0
     var isPlaying = false
     var currentTime: TimeInterval = 0.0
-    private(set) var episode: Episode? = nil
+    var isLoading = false
+    
+    private (set) var episode: Episode?
     private (set) var player: AVAudioPlayer?
-    private(set) var isLoading = false
+    private var timer: AnyCancellable?
     
     // Singleton instance
     static let shared = AudioPlayer()
@@ -54,6 +57,8 @@ import AVKit
                 do {
                     self.player = try AVAudioPlayer(data: data)
                     self.totalTime = self.player?.duration ?? 0
+                    self.episode?.isPlaying = true
+                    self.startTimer()
                 } catch {
                     print("Error creating audio player: \(error.localizedDescription)")
                 }
@@ -86,5 +91,17 @@ import AVKit
         let minutes = Int(time) / 60
         let seconds = Int(time) % 60
         return String(format: "%02d:%02d", minutes, seconds)
+    }
+    
+    private func startTimer() {
+        timer = Timer.publish(every: 1.0, on: .main, in: .common)
+            .autoconnect()
+            .sink { [weak self] _ in
+                self?.updateProgress()
+            }
+    }
+    
+    deinit {
+        timer?.cancel()
     }
 }
