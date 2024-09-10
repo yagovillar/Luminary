@@ -16,7 +16,6 @@ extension DetailsView {
         private (set) var podcast: Podcast?
         
         var errorToast: Toast?
-        var shouldNavigate: Bool = false
         var isLoading: Bool = false
         
         init(podcastService: PodcastService, podcastUrl: String) {

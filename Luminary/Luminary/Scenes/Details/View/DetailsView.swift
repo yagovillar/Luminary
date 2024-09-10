@@ -10,6 +10,7 @@ import SwiftUI
 struct DetailsView: View {
     
     @State private var viewModel: ViewModel
+    @State private var showPlayer = false
     
     init(viewModel: ViewModel) {
         self.viewModel = viewModel
@@ -41,7 +42,7 @@ struct DetailsView: View {
                     
                     LazyVStack(alignment:.leading) {
                         ForEach(0..<(viewModel.podcast?.episodes.count ?? 0),id: \.self) { number in
-                                NavigationLink(destination: PlayerView()) {
+                            NavigationLink(destination: PlayerView(viewModel: PlayerView.ViewModel(episode: getEpisode(at: number)))) {
                                     EpisodesCell(episode: self.getEpisode(at: number)).padding(.vertical, 5)
                                 }
                             }
@@ -58,8 +59,17 @@ struct DetailsView: View {
                 .isLoading(viewModel.isLoading)
                 .onAppear(perform: {
                     viewModel.fetchPodcast()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                        showPlayer = AudioPlayer.shared.player != nil
+                    })
             })
-        }.background( 
+                .sheet(isPresented: $showPlayer) {
+                        TabBarPlayerView()
+                            .interactiveDismissDisabled()
+                            .presentationDetents([.height(120)])
+                            .presentationBackgroundInteraction(.enabled(upThrough: .height(120)))
+                }
+        }.background(
             Color(hex: "171412")
         )
     }
@@ -69,8 +79,4 @@ struct DetailsView: View {
         episode.image = viewModel.podcast?.image.url
         return episode
     }
-}
-
-#Preview {
-    DetailsView(viewModel: DetailsView.ViewModel(podcastService: PodcastService(), podcastUrl: "https://anchor.fm/s/7a186bc/podcast/rss"))
 }
