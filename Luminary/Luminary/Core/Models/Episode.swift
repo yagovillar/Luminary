@@ -10,11 +10,16 @@ import Foundation
 struct Episode {
     var title: String
     var description: String
-    var pubDate: Date
+    var pubDate: String
     var audioUrl: String
-    var duration: Int
+    var duration: String
     var isExplicit: Bool
     var guid: String
     var author: String
     var podcastName: String
+    var image: String?
+    
+    static func getEmptyEpisode() -> Episode {
+        return Episode(title: "", description: "", pubDate: "", audioUrl: "", duration: "", isExplicit: false, guid: "", author: "", podcastName: "")
+    }
 }

@@ -8,23 +8,31 @@
 import SwiftUI
 
 struct EpisodesCell: View {
+    
+    private var episode: Episode
+    
+    init(episode: Episode) {
+        self.episode = episode
+    }
+    
     var body: some View {
         ZStack{
             Color(hex: "171412")
             HStack {
-                Image(uiImage: UIImage(named: "LaunchScreenImage") ?? UIImage())
-                    .resizable()
-                    .frame(width: 70, height: 70, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                AsyncImage(url: URL(string: episode.image ?? "")) { image in
+                    image.image?.resizable()
+                }
+                .frame(width: 70, height: 70, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
                 
                 VStack(alignment: .leading) {
-                    Text("The Joe Rogan Experience #1756 - Dr. Mark Gordon")
+                    Text(episode.title)
                         .font(.system(size: 16, weight: .medium))
                         .foregroundStyle(.white)
                     
-                    Text("3 days ago")
+                    Text(episode.pubDate.description)
                         .font(.system(size: 14, weight: .regular))
                         .foregroundStyle(Color(hex: "BAA89C"))
-                    Text("2h 24m")
+                    Text(episode.duration.description)
                         .font(.system(size: 14, weight: .regular))
                         .foregroundStyle(Color(hex: "BAA89C"))                }.padding(.leading, 8)
                 Spacer()
@@ -33,6 +41,4 @@ struct EpisodesCell: View {
     }
 }
 
-#Preview {
-    EpisodesCell()
-}
+

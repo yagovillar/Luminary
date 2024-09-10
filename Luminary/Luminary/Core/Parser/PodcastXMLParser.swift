@@ -10,7 +10,10 @@ import Foundation
 class PodcastXMLParser: NSObject, XMLParserDelegate {
     private var podcastBuilder: PodcastBuilder = PodcastBuilder()
     private var currentElement = ""
+    private var currentChannelElement = ""
+    private var currentImageUrl = ""
     private var isParsingItem = false
+    private var isParsingImage = false
     
     func parse(_ data: Data) throws -> Podcast {
         let parser = XMLParser(data: data)
@@ -42,10 +45,9 @@ class PodcastXMLParser: NSObject, XMLParserDelegate {
                 podcastBuilder.setCurrentAudioUrl(url)
             }
             
-        case "itunes:image":
-            if let imageUrl = attributeDict["href"] {
-                podcastBuilder.setPodcastImageUrl(imageUrl)
-            }
+        case "image":
+            isParsingImage = true
+            
             
         default:
             break
@@ -66,7 +68,7 @@ class PodcastXMLParser: NSObject, XMLParserDelegate {
             podcastBuilder.appendCurrentPubDate(trimmedString)
             
         case "itunes:duration":
-            podcastBuilder.setCurrentDuration(trimmedString)
+            podcastBuilder.setCurrentEpisodeDuration(trimmedString)
             
         case "itunes:explicit":
             podcastBuilder.setCurrentExplicit(trimmedString.lowercased() == "yes")
@@ -76,6 +78,9 @@ class PodcastXMLParser: NSObject, XMLParserDelegate {
             
         case "itunes:author", "author":
             podcastBuilder.setCurrentAuthor(trimmedString)
+            
+        case "url":
+            isParsingImage ? podcastBuilder.setPodcastImageUrl(trimmedString) : nil
             
         default:
             break

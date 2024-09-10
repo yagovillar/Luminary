@@ -27,9 +27,8 @@ enum PodcastError: Error {
     }
 }
 
-class PodcastService: ObservableObject {
+class PodcastService {
     private let session: URLSession
-    @Published var podcastUrl: String?
 
     init(session: URLSession = .shared) {
         self.session = session
@@ -65,7 +64,6 @@ class PodcastService: ObservableObject {
                         xmlString.contains("<channel") ||
                         xmlString.contains("<item>")
             
-            self.podcastUrl = urlString
             completion(.success(isRSS))
         }
         

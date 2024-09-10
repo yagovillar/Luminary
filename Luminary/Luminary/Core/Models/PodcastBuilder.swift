@@ -19,47 +19,57 @@ class PodcastBuilder {
     // MARK: - Podcast Parsing Methods
     
     func appendPodcastTitle(_ title: String) {
-        podcastTitle += title
+        if podcastTitle == "" {
+            podcastTitle = title
+        }
     }
     
     func appendPodcastDescription(_ description: String) {
-        podcastDescription += description
+            podcastDescription += description
     }
     
     func setPodcastImageUrl(_ url: String) {
-        podcastImageUrl = url
+        if podcastImageUrl == "" {
+            podcastImageUrl = url
+        }
     }
     
     // MARK: - Episode Parsing Methods
     
     func startNewEpisode() {
         currentEpisode = Episode(
-            title: "", description: "", pubDate: Date(), audioUrl: "", duration: 0, isExplicit: false, guid: "", author: "", podcastName: podcastTitle
+            title: "", description: "", pubDate: "", audioUrl: "", duration: "", isExplicit: false, guid: "", author: "", podcastName: podcastTitle
         )
     }
     
     func appendCurrentEpisodeTitle(_ title: String) {
-        currentEpisode?.title += title
+        if currentEpisode?.title == "" {
+            currentEpisode?.title = title
+        }
+    }
+    
+    func setCurrentEpisodeDuration(_ duration: String) {
+        if currentEpisode?.duration == "" {
+            currentEpisode?.duration = duration.toTimeFormat() ?? ""
+        }
     }
     
     func appendCurrentEpisodeDescription(_ description: String) {
-        currentEpisode?.description += description
+        if currentEpisode?.description == "" {
+            currentEpisode?.description = description
+        }
     }
     
     func appendCurrentPubDate(_ pubDate: String) {
         if let date = DateFormatter.convertPubDate(pubDate) {
-            currentEpisode?.pubDate = date
+            currentEpisode?.pubDate = date.timeAgoSinceNow()
         }
     }
     
     func setCurrentAudioUrl(_ url: String) {
         currentEpisode?.audioUrl = url
     }
-    
-    func setCurrentDuration(_ duration: String) {
-        currentEpisode?.duration = Int(duration) ?? 0
-    }
-    
+
     func setCurrentExplicit(_ isExplicit: Bool) {
         currentEpisode?.isExplicit = isExplicit
     }
@@ -82,7 +92,17 @@ class PodcastBuilder {
     // MARK: - Final Build Methods
     
     func finishPodcast() {
-        // This could also set other podcast-level info if necessary
+        if let data = podcastDescription.data(using: .utf8) {
+            let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
+                .documentType: NSAttributedString.DocumentType.html,
+                .characterEncoding: String.Encoding.utf8.rawValue
+            ]
+            
+            if let attributedString = try? NSAttributedString(data: data, options: options, documentAttributes: nil) {
+                let plainText = attributedString.string
+                podcastDescription = plainText
+            }
+        }
     }
     
     func build() -> Podcast? {
@@ -91,7 +111,7 @@ class PodcastBuilder {
         return Podcast(
             title: podcastTitle,
             description: podcastDescription,
-            imageUrl: podcastImageUrl,
+            image: PodcastImage(url: podcastImageUrl, title: "", link: ""),
             author: podcastAuthor,
             episodes: episodes
         )

@@ -10,7 +10,7 @@ import Foundation
 struct Podcast {
     var title: String
     var description: String
-    var imageUrl: String
+    var image: PodcastImage
     var author: String
     var episodes: [Episode]
 }
