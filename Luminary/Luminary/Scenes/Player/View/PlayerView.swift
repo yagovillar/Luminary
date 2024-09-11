@@ -20,7 +20,7 @@ struct PlayerView: View {
             Color(hex: "171412").ignoresSafeArea()
             
             VStack(alignment: .center) {
-                AsyncImage(url: URL(string: viewModel.episode.image ?? "")) { image in
+                AsyncImage(url: URL(string: viewModel.player.episode.image ?? "")) { image in
                     image.resizable()
                         .scaledToFit()
                 } placeholder: {
@@ -29,12 +29,12 @@ struct PlayerView: View {
                 .frame(width: 256, height: 256)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
                 
-                Text(viewModel.episode.title)
+                Text(viewModel.player.episode.title)
                     .font(.system(size: 22, weight: .bold))
                     .foregroundStyle(.white)
                     .padding(.top)
                 
-                Text(viewModel.episode.podcastName)
+                Text(viewModel.player.episode.podcastName)
                     .font(.system(size: 16, weight: .regular))
                     .foregroundStyle(Color(hex: "BAA89E"))
                 
@@ -71,6 +71,15 @@ struct ControlsView: View {
     var body: some View {
         HStack(spacing: 24) {
             Button(action: {
+                viewModel.player.moveBackWards()
+            }) {
+                Image(systemName: "backward.end.fill")
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(.white)
+                    .font(.system(size: 30))
+            }
+            
+            Button(action: {
                 viewModel.player.seekAudio(to: viewModel.player.currentTime - 30.0)
             }) {
                 Image(systemName: "backward.fill")
@@ -92,6 +101,15 @@ struct ControlsView: View {
                 viewModel.player.seekAudio(to: viewModel.player.currentTime + 30.0)
             }) {
                 Image(systemName: "forward.fill")
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(.white)
+                    .font(.system(size: 30))
+            }
+            
+            Button(action: {
+                viewModel.player.moveFoward()
+            }) {
+                Image(systemName: "forward.end.fill")
                     .symbolRenderingMode(.palette)
                     .foregroundStyle(.white)
                     .font(.system(size: 30))

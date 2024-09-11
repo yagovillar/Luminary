@@ -98,6 +98,63 @@ import SwiftData
         player.currentTime = max(time, 0)
     }
     
+    @MainActor func moveFoward() {
+        appDataManager?.fetchPodcast(completion: { result in
+            switch result {
+            case .success(let success):
+                if let nextEpisode = self.get(nextEpisode: true, from: success.playingPodcast?.episodes ?? [], currentEpisode: self.episode) {
+                    self.appDataManager?.updatePlayingEpisode(episode: nextEpisode)
+                    if self.isPlaying{
+                        self.playButtonTapped()
+                    }
+                    self.loadAudio()
+                }
+            case .failure(let failure):
+                print("Error going foward: \(failure.localizedDescription)")
+            }
+        })
+    }
+    
+    @MainActor func moveBackWards() {
+        appDataManager?.fetchPodcast(completion: { result in
+            switch result {
+            case .success(let success):
+                if let nextEpisode = self.get(nextEpisode: false, from: success.playingPodcast?.episodes ?? [], currentEpisode: self.episode) {
+                    self.appDataManager?.updatePlayingEpisode(episode: nextEpisode)
+                    if self.isPlaying{
+                        self.playButtonTapped()
+                    }
+                    self.loadAudio()
+                }
+            case .failure(let failure):
+                print("Error going foward: \(failure.localizedDescription)")
+            }
+        })
+    }
+    
+    private func get(nextEpisode: Bool, from episodes: [Episode], currentEpisode: Episode) -> Episode? {
+        guard let currentIndex = episodes.firstIndex(where: {$0.title == currentEpisode.title}) else {
+            return nil // Current episode not found in the array
+        }
+        
+        if nextEpisode {
+            let nextIndex = currentIndex + 1
+            if nextIndex < episodes.count {
+                return episodes[nextIndex]
+            } else {
+                return nil // No next episode available
+            }
+        } else {
+            let nextIndex = currentIndex - 1
+            if nextIndex >= 0 {
+                return episodes[nextIndex]
+            } else {
+                return nil // No next episode available
+            }
+        }
+
+    }
+    
     func timeString(time: TimeInterval) -> String {
         let minutes = Int(time) / 60
         let seconds = Int(time) % 60

@@ -27,7 +27,11 @@ extension DetailsView {
         
         @MainActor func fetchPodcast() {
             isLoading.toggle()
-            if podcast == nil {
+            if let podcast = self.podcast {
+                self.appManager.updatePlayingPodcast(podcast: podcast)
+                self.appManager.appendPodcast(podcast: podcast)
+                isLoading.toggle()
+            } else {
                 self.podcastService.fetchPodcast(from: podcastUrl) { [weak self] result in
                     guard let self = self else { return }
                     DispatchQueue.main.async {
@@ -42,8 +46,7 @@ extension DetailsView {
                         self.isLoading.toggle()
                     }
                 }
-            } else {
-                isLoading.toggle()
+
             }
         }
     }

@@ -12,11 +12,12 @@ import AVKit
 extension PlayerView {
     @Observable
     class ViewModel {
-        private (set) var episode: Episode
+        private (set) var episode: Episode = AudioPlayer.shared.episode
         private (set) var player = AudioPlayer.shared
         
         var errorToast: Toast?
         var isLoading: Bool = false
+        
         
         init(episode: Episode) {
             self.episode = episode
