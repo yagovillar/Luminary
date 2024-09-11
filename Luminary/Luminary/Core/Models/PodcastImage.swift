@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct PodcastImage {
-    var url: String
-    var title: String
-    var link: String
+struct PodcastImage: Codable {
+    var url: String?
+    var title: String?
+    var link: String?
 }

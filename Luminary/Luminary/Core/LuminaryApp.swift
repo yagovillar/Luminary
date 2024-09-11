@@ -10,21 +10,11 @@ import SwiftData
 
 @main
 struct LuminaryApp: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
 
     @StateObject private var appRootManager = AppRootManager()
-    
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    @StateObject private var appDataManager = AppDataManager.shared
+
     var body: some Scene {
         WindowGroup {
             Group {
@@ -36,6 +26,7 @@ struct LuminaryApp: App {
                 }
             }
             .environmentObject(appRootManager)
+            .environment(appDataManager)
         }
     }
 }

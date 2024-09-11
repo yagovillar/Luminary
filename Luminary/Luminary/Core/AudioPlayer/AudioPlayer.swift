@@ -8,16 +8,20 @@
 import Foundation
 import AVKit
 import Combine
+import SwiftUI
+import SwiftData
 
 @Observable class AudioPlayer: ObservableObject {
     var totalTime: TimeInterval = 0.0
     var isPlaying = false
     var currentTime: TimeInterval = 0.0
     var isLoading = false
+    var episode: Episode = Episode.getEmptyEpisode()
     
-    private (set) var episode: Episode?
     private (set) var player: AVAudioPlayer?
     private var timer: AnyCancellable?
+    private (set) var appDataManager: AppDataManager?
+
     
     // Singleton instance
     static let shared = AudioPlayer()
@@ -26,44 +30,51 @@ import Combine
     private init() {}
     
     // Setup with an episode
-    func setup(with episode: Episode) {
-        self.episode = episode
+    @MainActor func setup(appManager: AppDataManager) {
+        self.appDataManager = appManager
+        self.loadAudio()
     }
     
-    func loadAudio() {
-        guard let episode = episode, let url = URL(string: episode.audioUrl) else {
-            print("Invalid URL or Episode not set")
-            return
-        }
-        
-        isLoading = true
-        
-        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-            guard let self = self else { return }
-            
-            DispatchQueue.main.async {
-                self.isLoading = false
-                
-                if let error = error {
-                    print("Error loading audio: \(error.localizedDescription)")
+    @MainActor func loadAudio() {
+        appDataManager?.fetchPodcast(completion: { result in
+            switch result {
+            case .success(let success):
+                guard let episode = success.playingEpisode, let url = URL(string: episode.audioUrl) else {
+                    print("Invalid URL or Episode not set")
                     return
                 }
+                self.episode = episode
+                self.isLoading = true
                 
-                guard let data = data else {
-                    print("No data received")
-                    return
-                }
-                
-                do {
-                    self.player = try AVAudioPlayer(data: data)
-                    self.totalTime = self.player?.duration ?? 0
-                    self.episode?.isPlaying = true
-                    self.startTimer()
-                } catch {
-                    print("Error creating audio player: \(error.localizedDescription)")
-                }
+                URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+                    guard let self = self else { return }
+                    
+                    DispatchQueue.main.async {
+                        self.isLoading = false
+                        
+                        if let error = error {
+                            print("Error loading audio: \(error.localizedDescription)")
+                            return
+                        }
+                        
+                        guard let data = data else {
+                            print("No data received")
+                            return
+                        }
+                        
+                        do {
+                            self.player = try AVAudioPlayer(data: data)
+                            self.totalTime = self.player?.duration ?? 0
+                            self.startTimer()
+                        } catch {
+                            print("Error creating audio player: \(error.localizedDescription)")
+                        }
+                    }
+                }.resume()
+            case .failure(let failure):
+                print("Error creating audio player: \(failure.localizedDescription)")
             }
-        }.resume()
+        })
     }
     
     func playButtonTapped() {

@@ -38,7 +38,7 @@ class PodcastBuilder {
     
     func startNewEpisode() {
         currentEpisode = Episode(
-            title: "", description: "", pubDate: "", audioUrl: "", duration: "", isExplicit: false, guid: "", author: "", podcastName: podcastTitle
+            title: "", episodeDescription: "", pubDate: "", audioUrl: "", duration: "", isExplicit: false, guid: "", author: "", podcastName: podcastTitle
         )
     }
     
@@ -55,8 +55,8 @@ class PodcastBuilder {
     }
     
     func appendCurrentEpisodeDescription(_ description: String) {
-        if currentEpisode?.description == "" {
-            currentEpisode?.description = description
+        if currentEpisode?.episodeDescription == "" {
+            currentEpisode?.episodeDescription = description
         }
     }
     
@@ -111,7 +111,7 @@ class PodcastBuilder {
         
         return Podcast(
             title: podcastTitle,
-            description: podcastDescription,
+            podDescription: podcastDescription,
             image: PodcastImage(url: podcastImageUrl, title: "", link: ""),
             author: podcastAuthor,
             episodes: episodes

@@ -8,21 +8,25 @@
 import SwiftUI
 
 struct RecentCell: View {
+    
+    private var podcast: Podcast
+    
+    init(podcast: Podcast) {
+        self.podcast = podcast
+    }
+    
     var body: some View {
         ZStack{
             Color(hex: "171412")
             HStack {
-                Image(uiImage: UIImage(named: "LaunchScreenImage") ?? UIImage())
-                    .resizable()
+                AsyncImage(url: URL(string: podcast.image.url ?? "")){ image in
+                    image.image?.resizable()
+                }
                     .frame(width: 56, height: 56, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
                 
                 VStack(alignment: .leading) {
-                    Text("RSS")
+                    Text(podcast.title)
                         .font(.system(size: 16, weight: .medium))
-                        .foregroundStyle(.white)
-                    
-                    Text("RSS")
-                        .font(.system(size: 14, weight: .regular))
                         .foregroundStyle(.white)
                 }.padding(.leading, 8)
                 Spacer()
@@ -31,6 +35,6 @@ struct RecentCell: View {
     }
 }
 
-#Preview {
-    RecentCell()
-}
+//#Preview {
+//    RecentCell()
+//}

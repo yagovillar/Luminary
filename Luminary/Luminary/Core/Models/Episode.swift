@@ -7,9 +7,10 @@
 
 import Foundation
 
-struct Episode: Hashable {
+struct Episode: Hashable, Codable, Identifiable {
+    let id = UUID()
     var title: String
-    var description: String
+    var episodeDescription: String
     var pubDate: String
     var audioUrl: String
     var duration: String
@@ -21,6 +22,6 @@ struct Episode: Hashable {
     var isPlaying: Bool = false
     
     static func getEmptyEpisode() -> Episode {
-        return Episode(title: "", description: "", pubDate: "", audioUrl: "", duration: "", isExplicit: false, guid: "", author: "", podcastName: "")
+        return Episode(title: "", episodeDescription: "", pubDate: "", audioUrl: "", duration: "", isExplicit: false, guid: "", author: "", podcastName: "")
     }
 }

@@ -49,7 +49,7 @@ struct PlayerView: View {
                         .foregroundStyle(Color(hex: "BAA89E"))
                         .font(.system(size: 12, weight: .regular))
                     Spacer()
-                    Text(viewModel.player.episode?.duration.toTimeFormat() ?? "")
+                    Text(viewModel.episode.duration.toTimeFormat() ?? "")
                         .foregroundStyle(Color(hex: "BAA89E"))
                         .font(.system(size: 12, weight: .regular))
                 }
@@ -57,7 +57,7 @@ struct PlayerView: View {
                 ControlsView(viewModel: viewModel)
             }
             .onAppear {
-                viewModel.player.loadAudio()
+                viewModel.setupViewModel(appDataManager: AppDataManager.shared)
             }
             .toastView(toast: $viewModel.errorToast)
             .isLoading(viewModel.player.isLoading)
@@ -99,8 +99,4 @@ struct ControlsView: View {
         }
         .padding()
     }
-}
-
-#Preview {
-    PlayerView(viewModel: PlayerView.ViewModel(episode: Episode.getEmptyEpisode()))
 }

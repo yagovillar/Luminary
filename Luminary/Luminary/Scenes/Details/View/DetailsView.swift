@@ -10,44 +10,40 @@ import SwiftUI
 struct DetailsView: View {
     @State private var viewModel: ViewModel
     @State private var showPlayer = false
+    @EnvironmentObject var appDataManager: AppDataManager
+
     
     init(viewModel: ViewModel) {
-        _viewModel = State(initialValue: viewModel)
+        self.viewModel = viewModel
     }
     
     var body: some View {
-        ScrollView {
-            ZStack {
-                Color(hex: "171412").ignoresSafeArea()
-                
-                VStack(alignment: .leading) {
-                    podcastImage
-                    podcastTitle
-                    podcastDescription
-                    episodesSection
+        NavigationStack {
+                ZStack {
+                    Color(hex: "171412").ignoresSafeArea()
                     
-                    Spacer()
+                    VStack(alignment: .leading) {
+                        podcastImage
+                        podcastTitle
+                        podcastDescription
+                        episodesSection
+
+                    }
+                    .frame(width: UIScreen.main.bounds.width)
+                    .padding()
                 }
-                .padding()
-            }
-            .navigationBarModifier(
-                backgroundColor: UIColor(Color(hex: "171412")),
-                foregroundColor: .white, tintColor: .white,
-                withSeparator: false
-            )
-            .navigationTitle(viewModel.podcast?.title ?? "")
-            .navigationBarTitleDisplayMode(.inline)
-            .toastView(toast: $viewModel.errorToast)
-            .isLoading(viewModel.isLoading)
-            .onAppear(perform: setup)
-            .sheet(isPresented: $showPlayer) {
-                TabBarPlayerView()
-                    .interactiveDismissDisabled()
-                    .presentationDetents([.height(120)])
-                    .presentationBackgroundInteraction(.enabled(upThrough: .height(120)))
-            }
+                .navigationBarModifier(
+                    backgroundColor: UIColor(Color(hex: "171412")),
+                    foregroundColor: .white, tintColor: .white,
+                    withSeparator: false
+                )
+                .navigationTitle(viewModel.podcast?.title ?? "")
+                .navigationBarTitleDisplayMode(.inline)
+                .toastView(toast: $viewModel.errorToast)
+                .isLoading(viewModel.isLoading)
+                .onAppear(perform: setup)
+            .   background(Color(hex: "171412"))
         }
-        .background(Color(hex: "171412"))
     }
     
     private var podcastImage: some View {
@@ -55,6 +51,7 @@ struct DetailsView: View {
             image.image?.resizable()
         }
         .frame(height: 136)
+        .padding(.top, 80)
     }
     
     private var podcastTitle: some View {
@@ -65,7 +62,7 @@ struct DetailsView: View {
     }
     
     private var podcastDescription: some View {
-        Text(viewModel.podcast?.description ?? "")
+        Text(viewModel.podcast?.podDescription ?? "")
             .font(.system(size: 16, weight: .regular))
             .foregroundStyle(.white)
             .padding(.top)
@@ -78,8 +75,8 @@ struct DetailsView: View {
                 .foregroundStyle(.white)
                 .padding(.top)
             
-            LazyVStack(alignment: .leading) {
-                ForEach(viewModel.podcast?.episodes ?? [], id: \.self) { episode in
+            List {
+                ForEach(viewModel.podcast?.episodes ?? []) { episode in
                     NavigationLink(destination: PlayerView(viewModel: PlayerView.ViewModel(episode: episode))) {
                         EpisodesCell(episode: episode).padding(.vertical, 5)
                     }
@@ -88,10 +85,7 @@ struct DetailsView: View {
         }
     }
     
-    private func setup() {
+    @MainActor private func setup() {
         viewModel.fetchPodcast()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            showPlayer = AudioPlayer.shared.player != nil
-        }
     }
 }

@@ -22,7 +22,7 @@ enum PodcastError: Error {
         case .unknownError:
             return "An unknown error occurred. Please try again later."
         case .notFound:
-            return "Podcast not found. The URL might be incorrect or the podcast might not be available."
+            return "Podcast not found"
         }
     }
 }

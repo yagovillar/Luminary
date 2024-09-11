@@ -13,6 +13,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct HomeView: View {
     @State private var rss = ""
@@ -30,7 +31,7 @@ struct HomeView: View {
                     })
                     .padding()
                     
-                    RecentlyPlayedView()
+                    RecentlyPlayedView(recentPodcasts: viewModel.recentPodcasts ?? [])
                         .padding()
                     
                     Spacer()
@@ -48,25 +49,10 @@ struct HomeView: View {
                 DetailsView(viewModel: DetailsView.ViewModel(podcastService: PodcastService(), podcastUrl: rss))
             }
             .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-                    checkPlayerStatus()
-                })
+                viewModel.fetchRecentPodcasts()
             }
-            .sheet(isPresented: $showPlayer, content: {
-                TabBarPlayerView()
-                    .interactiveDismissDisabled()
-                    .presentationDetents([.height(120)])
-                    .presentationBackgroundInteraction(.enabled(upThrough: .height(120)))
-            })
         }
         .isLoading(viewModel.isLoading)
-    }
-    
-    
-    private func checkPlayerStatus() {
-        if AudioPlayer.shared.player != nil {
-            showPlayer = true
-        }
     }
 }
 
@@ -99,6 +85,7 @@ struct RSSInputView: View {
 }
 
 struct RecentlyPlayedView: View {
+    var recentPodcasts: [Podcast]
     var body: some View {
         VStack(alignment: .leading) {
             Text("Recently Played")
@@ -107,17 +94,18 @@ struct RecentlyPlayedView: View {
             
             ScrollView {
                 VStack(alignment: .leading) {
-                    ForEach(0..<10, id: \.self) { _ in
-                        NavigationLink(destination: HomeView()) {
-                            RecentCell()
+                    ForEach(recentPodcasts) { podcast in
+                        NavigationLink {
+                            DetailsView(viewModel: DetailsView.ViewModel(podcastService: PodcastService(), podcastUrl: "", podcast: podcast))
+                        } label: {
+                            RecentCell(podcast: podcast)
                         }
+
+                    }
+                        
                     }
                 }
             }
         }
-    }
 }
 
-#Preview {
-    HomeView()
-}

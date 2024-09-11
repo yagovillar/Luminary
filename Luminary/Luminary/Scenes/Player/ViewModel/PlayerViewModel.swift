@@ -20,7 +20,13 @@ extension PlayerView {
         
         init(episode: Episode) {
             self.episode = episode
-            player.setup(with: episode)
+        }
+        
+        func setupViewModel(appDataManager: AppDataManager) {
+            DispatchQueue.main.async {
+                appDataManager.updatePlayingEpisode(episode: self.episode)
+                self.player.setup(appManager: appDataManager)
+            }
         }
         
         

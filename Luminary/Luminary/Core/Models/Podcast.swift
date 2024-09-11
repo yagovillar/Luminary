@@ -7,9 +7,10 @@
 
 import Foundation
 
-struct Podcast {
+struct Podcast: Codable, Identifiable {
+    var id: String = UUID().uuidString
     var title: String
-    var description: String
+    var podDescription: String
     var image: PodcastImage
     var author: String
     var episodes: [Episode]

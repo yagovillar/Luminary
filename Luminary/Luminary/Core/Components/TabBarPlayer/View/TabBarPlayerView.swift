@@ -9,24 +9,24 @@ import SwiftUI
 
 struct TabBarPlayerView: View {
     
-    private var player = AudioPlayer.shared
+    @ObservedObject private var player = AudioPlayer.shared
 
     var body: some View {
         ZStack {
             Color(hex: "382E29").ignoresSafeArea()
             VStack {
                 HStack {
-                    AsyncImage(url: URL(string: player.episode?.image ?? "")) { image in
+                    AsyncImage(url: URL(string: player.episode.image ?? "")) { image in
                         image.image?.resizable()
                     }
                         .frame(width: 56, height: 56)
                         .clipShape(.rect(cornerRadius: 12))
                     
                     VStack(alignment: .leading) {
-                        Text(player.episode?.title ?? "")
+                        Text(player.episode.title)
                             .font(.system(size: 16, weight: .bold))
                             .foregroundStyle(.white)
-                        Text(player.episode?.podcastName ?? "")
+                        Text(player.episode.podcastName)
                             .font(.system(size: 14, weight: .regular))
                             .foregroundStyle(Color(hex: "BAA89E"))
                     }
